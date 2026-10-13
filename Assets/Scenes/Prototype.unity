@@ -760,7 +760,7 @@ GameObject:
   - component: {fileID: 604368516}
   - component: {fileID: 604368515}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Info_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1605,7 +1605,7 @@ GameObject:
   - component: {fileID: 1427712218}
   - component: {fileID: 1427712217}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Office_Menu_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

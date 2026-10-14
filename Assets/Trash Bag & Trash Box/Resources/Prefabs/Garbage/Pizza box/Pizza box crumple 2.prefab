@@ -84,6 +84,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pizza box crumple 2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fa40fdefe1cb2db4c92854661a3b7338, type: 3}
+      propertyPath: m_TagString
+      value: Waste
+      objectReference: {fileID: 0}
     - target: {fileID: 1916635652272090048, guid: fa40fdefe1cb2db4c92854661a3b7338, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

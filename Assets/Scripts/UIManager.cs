@@ -11,12 +11,15 @@ public class UIManager : MonoBehaviour
     [Header("Office Gameplay")]
     [SerializeField] private Button purchaseFacility;
     [SerializeField] private Button purchaseTruck;
+    [SerializeField] private Button activeSimButton;
 
     [Header("Screenspace")]
     [SerializeField] private TextMeshProUGUI budgetText;
     [SerializeField] private TextMeshProUGUI dayCountText;
     [SerializeField] private TextMeshProUGUI landfillUsageText;
     [SerializeField] private TextMeshProUGUI cityDirtinessText;
+
+    private TextMeshProUGUI activeSimLabel;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,9 +29,12 @@ public class UIManager : MonoBehaviour
 
         GameManager.Instance.OnMoneyChanged += UpdateBudgetText;
         GameManager.Instance.OnDayChanged += UpdateDayText;
+        GameManager.Instance.OnSimStateChanged += UpdateSimButton;
 
         UpdateBudgetText(GameManager.Instance.PlayerMoney);
         UpdateDayText(GameManager.Instance.CurrentDay);
+
+        activeSimButton.onClick.AddListener(() => GameManager.Instance.SetSimActive(true));
     }
 
 
@@ -47,6 +53,8 @@ public class UIManager : MonoBehaviour
         dayCountText.gameObject.SetActive(visible);
         landfillUsageText.gameObject.SetActive(visible);
         cityDirtinessText.gameObject.SetActive(visible);
+
+        activeSimButton.gameObject.SetActive(visible && !GameManager.Instance.IsSimActive);
     }
 
     void UpdateBudgetText(int money)
@@ -57,5 +65,20 @@ public class UIManager : MonoBehaviour
     void UpdateDayText(int day)
     {
         dayCountText.text = $"Day {day}";
+    }
+
+    void UpdateSimButton(bool active)
+    {
+        activeSimButton.gameObject.SetActive(!active);
+    }
+
+    void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnMoneyChanged -= UpdateBudgetText;
+            GameManager.Instance.OnDayChanged -= UpdateDayText;
+            GameManager.Instance.OnSimStateChanged -= UpdateSimButton;
+        }
     }
 }

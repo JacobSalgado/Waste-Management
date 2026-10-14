@@ -10,9 +10,9 @@ public class WasteSpawner : MonoBehaviour
     [SerializeField] private GameObject sodaCan;
 
     [Header("Spawn-related Variables")]
-    private float _wasteSpawnTimer = 1f;
+    [SerializeField] private float _wasteSpawnTimer = 1f;
     [SerializeField] private GameObject _spawnerContainer;
-    private bool _isSpawning = false;
+    private Coroutine _spawnRoutine;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,18 +21,44 @@ public class WasteSpawner : MonoBehaviour
         if (pizzaBox == null || _spawnerContainer == null)
         {
             Debug.Log("game objects are NULL");
+            return;
         }
-
-        _isSpawning = true;
-        StartCoroutine(WasteSpawnControl());
     }
 
+    public void StartSpawning()
+    {
+        if (_spawnRoutine == null)
+            _spawnRoutine = StartCoroutine(WasteSpawnControl());
+    }
+
+    public void StopSpawning()
+    {
+        if (_spawnRoutine != null)
+        {
+            StopCoroutine(_spawnRoutine);
+            _spawnRoutine = null;
+        }
+    }
+
+    public int ClearRemainingWaste()
+    {
+        int count = 0;
+        foreach (Transform child in _spawnerContainer.transform)
+        {
+            if (child.CompareTag("Waste"))
+            {
+                count++;
+                Destroy(child.gameObject);
+            }
+        }
+        return count;
+    }
 
     IEnumerator WasteSpawnControl()
     {
-        while (_isSpawning)
+        while (true)
         {
-            Vector3 randomPos = new Vector3(Random.Range(-15, 30), -10, Random.Range(-20, 20));
+            Vector3 randomPos = new Vector3(Random.Range(-15f, 30f), -10, Random.Range(-20f, 20f));
             GameObject newWaste = Instantiate(pizzaBox, _spawnerContainer.transform);
             newWaste.transform.localPosition = randomPos;
             newWaste.transform.localRotation = Quaternion.identity;

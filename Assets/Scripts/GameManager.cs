@@ -1,13 +1,15 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance{get; private set; }
 
-    // UI variables
     public event Action<int> OnMoneyChanged;
     public event Action<int> OnDayChanged;
+    public event Action<bool> OnSimStateChanged;
 
     [SerializeField] private int currentLandfillAmount;
     [SerializeField] private int maxLandfillAmount;
@@ -17,11 +19,25 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int currentDay = 1;
 
+    [Header("Facilities")]
     [SerializeField] private FacilityManager facilityManager;
     [SerializeField] private WasteProductionScript wasteProductionLocation;
 
+    [Header("Simulation")]
+    [SerializeField] private WasteSpawner wasteSpawner;
+    [SerializeField] private TruckController truckPrefab;
+    [SerializeField] private Transform truckSpawnPoint;
+    [SerializeField] private Transform truckEndPoint;
+    [SerializeField] private Transform transferStationPoint;
+    [SerializeField] private float spawnPhaseDuration = 10f;
+    [SerializeField] private float transferStationDelay = 2f;
+
+
     public int PlayerMoney => playerMoney;
     public int CurrentDay => currentDay;
+
+    private bool isSimActive = false;
+    public bool IsSimActive => isSimActive;
 
     private void Awake()
     {
@@ -103,6 +119,58 @@ public class GameManager : MonoBehaviour
     private void TriggerGameOver()
     {
         Debug.Log("Game Over");
-        SceneLoader.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void SetSimActive(bool active)
+    {
+        if (isSimActive == active) return;
+
+        isSimActive = active;
+        OnSimStateChanged?.Invoke(isSimActive);
+
+        if (isSimActive)
+        {
+            StartCoroutine(RunSimulation());
+        }
+    }
+
+    public void ToggleSim()
+    {
+        SetSimActive(!isSimActive);
+    }
+
+    private IEnumerator RunSimulation()
+    {
+        // First phase: waste spawns in
+        wasteSpawner.StartSpawning();
+        yield return new WaitForSeconds(spawnPhaseDuration);
+        wasteSpawner.StopSpawning();
+
+        // Second phase: truck collects waste
+        Vector3 driveDir = truckEndPoint.position - truckSpawnPoint.position;
+        driveDir.y = 0f;
+        TruckController truck = Instantiate(truckPrefab, truckSpawnPoint.position, Quaternion.LookRotation(driveDir));
+
+        bool routeDone = false;
+        int collected = 0;
+        truck.OnRouteComplete += amount => { collected = amount; routeDone = true; };
+        truck.BeginRoute(truckEndPoint.position);
+
+        yield return new WaitUntil(() => routeDone);
+
+        // Third phase: teleport to transfer station, then remove truck
+        truck.TeleportTo(transferStationPoint);
+        yield return new WaitForSeconds(transferStationDelay);
+        Destroy(truck.gameObject);
+
+        // Fourth phase: collected waste goes to facilities, overflow goes to landfill
+        int overflow = facilityManager != null ? facilityManager.DeliverWaste(collected) : collected;
+
+        int uncollected = wasteSpawner.ClearRemainingWaste(); // waste that the truck missed also goes to landfill
+
+        // TODO: landfill, advance day things, etc.
+        DumpIntoLandfill(overflow + uncollected);
+        AdvanceDay();
     }
 }

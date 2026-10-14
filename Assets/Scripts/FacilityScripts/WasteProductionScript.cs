@@ -23,7 +23,7 @@ public class WasteProductionScript : MonoBehaviour
 
     public int CollectTrash(int truckAvailableSpace)
     {
-        int amountToCollect = Mathf..Min(currentTotalWaste, truckAvailableSpace);
+        int amountToCollect = Mathf.Min(currentTotalWaste, truckAvailableSpace);
 
         currentTotalWaste -= amountToCollect;
 

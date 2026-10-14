@@ -57,4 +57,22 @@ public class FacilityManager : MonoBehaviour
 
         return Mathf.RoundToInt(currentFacilityCost);
     }
+
+    public int DeliverWaste(int amount)
+    {
+        int remaining = amount;
+
+        foreach (FacilityInstance facility in activeDataInstance)
+        {
+            if (remaining <= 0) break;
+
+            int space = facility.GetRemainingStorageSpace();
+            if (space <= 0) continue;
+
+            int delivered = Mathf.Min(space, remaining);
+            facility.AddToStorage(delivered);
+            remaining -= delivered;
+        }
+        return remaining;
+    }
 }

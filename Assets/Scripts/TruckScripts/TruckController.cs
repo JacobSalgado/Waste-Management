@@ -14,10 +14,18 @@ public class TruckController : MonoBehaviour
     private int wasteCollected;
     private bool isDriving;
 
+    private int capacity = int.MaxValue;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
+    }
+
+    public void Initialize(TruckInstance data)
+    {
+        speed = data.GetSpeed();
+        capacity = data.GetCapacity();
     }
 
     public void BeginRoute(Vector3 target)
@@ -58,6 +66,7 @@ public class TruckController : MonoBehaviour
         if (isDriving && other.CompareTag("Waste"))
         {
             wasteCollected++;
+            GameManager.Instance.RegisterWasteCollected();
             Destroy(other.gameObject);
         }
     }

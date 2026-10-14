@@ -17,24 +17,40 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI budgetText;
     [SerializeField] private TextMeshProUGUI dayCountText;
     [SerializeField] private TextMeshProUGUI landfillUsageText;
+    [SerializeField] private TextMeshProUGUI facilitiesText;
     [SerializeField] private TextMeshProUGUI cityDirtinessText;
+
+    [Header("End of Week")]
+    [SerializeField] private TextMeshProUGUI weekCompleteText;
 
     private TextMeshProUGUI activeSimLabel;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        activeSimLabel = activeSimButton.GetComponentInChildren<TextMeshProUGUI>();
+        weekCompleteText.gameObject.SetActive(false);
+
         SetGameplayUI(false);
         startButton.onClick.AddListener(StartGame);
-
-        GameManager.Instance.OnMoneyChanged += UpdateBudgetText;
-        GameManager.Instance.OnDayChanged += UpdateDayText;
-        GameManager.Instance.OnSimStateChanged += UpdateSimButton;
-
-        UpdateBudgetText(GameManager.Instance.PlayerMoney);
-        UpdateDayText(GameManager.Instance.CurrentDay);
-
         activeSimButton.onClick.AddListener(() => GameManager.Instance.SetSimActive(true));
+
+        GameManager.Instance.OnStatsChanged += RefreshStats;
+        GameManager.Instance.OnSimStateChanged += UpdateSimButton;
+        GameManager.Instance.OnWeekComplete += ShowWeekComplete;
+
+        RefreshStats(GameManager.Instance.GetStats());
+    }
+
+    void RefreshStats(GameStats stats)
+    {
+        budgetText.text = $"Budget: ${stats.money:N0}";
+        dayCountText.text = $"Day {stats.day}";
+        landfillUsageText.text = $"Landfill: {stats.LandfillPercent:P0} ({stats.landfillAmount}/{stats.landfillMax})";
+        facilitiesText.text = $"Facilities: {stats.facilityCount} | Storage: {stats.FacilityStoragePercent:P0}";
+        cityDirtinessText.text = $"City Waste: {stats.cityWasteCount}";
+
+        activeSimLabel.text = $"Start Day {stats.day}";
     }
 
 
@@ -52,33 +68,31 @@ public class UIManager : MonoBehaviour
         budgetText.gameObject.SetActive(visible);
         dayCountText.gameObject.SetActive(visible);
         landfillUsageText.gameObject.SetActive(visible);
+        facilitiesText.gameObject.SetActive(visible);
         cityDirtinessText.gameObject.SetActive(visible);
 
-        activeSimButton.gameObject.SetActive(visible && !GameManager.Instance.IsSimActive);
-    }
-
-    void UpdateBudgetText(int money)
-    {
-        budgetText.text = $"Budget: ${money:N0}"; // :NO formats the number with commas. So 500000 will appear as 500,000"
-    }
-
-    void UpdateDayText(int day)
-    {
-        dayCountText.text = $"Day {day}";
+        activeSimButton.gameObject.SetActive(visible && !GameManager.Instance.IsSimActive && !GameManager.Instance.IsWeekComplete);
     }
 
     void UpdateSimButton(bool active)
     {
-        activeSimButton.gameObject.SetActive(!active);
+        activeSimButton.gameObject.SetActive(!active && !GameManager.Instance.IsWeekComplete);
+    }
+
+    void ShowWeekComplete()
+    {
+        activeSimButton.gameObject.SetActive(false);
+        weekCompleteText.gameObject.SetActive(true);
+        weekCompleteText.text = "Week Complete!";
     }
 
     void OnDestroy()
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnMoneyChanged -= UpdateBudgetText;
-            GameManager.Instance.OnDayChanged -= UpdateDayText;
+            GameManager.Instance.OnStatsChanged += RefreshStats;
             GameManager.Instance.OnSimStateChanged -= UpdateSimButton;
+            GameManager.Instance.OnWeekComplete -= ShowWeekComplete;
         }
     }
 }

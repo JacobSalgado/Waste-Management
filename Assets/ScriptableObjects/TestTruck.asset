@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ea1fa365e96454f8d4a397ccf49e93, type: 3}
+  m_Name: TestTruck
+  m_EditorClassIdentifier: Assembly-CSharp::TruckTemplate
+  truckID: 
+  truckName: 
+  truckPrefab: {fileID: 0}
+  defaultTruckCost: 50000
+  truckCostMultiplier: 0.25
+  defaultCapacity: 10
+  capacityMultiplier: 0.5
+  defaultSpeed: 8
+  speedPerUpgrade: 1
+  maxSpeed: 16
+  defaultUpgradeCost: 25000
+  upgradeCostMultiplier: 0.5

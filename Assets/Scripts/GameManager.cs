@@ -1,23 +1,33 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance{get; private set; }
-
-    public event Action<int> OnMoneyChanged;
-    public event Action<int> OnDayChanged;
     public event Action<bool> OnSimStateChanged;
+    public event Action<GameStats> OnStatsChanged;
+    public event Action OnWeekComplete;
 
+    [Header("Landfill")]
     [SerializeField] private int currentLandfillAmount;
-    [SerializeField] private int maxLandfillAmount;
+    [SerializeField] private int maxLandfillAmount = 50;
 
 
+    [Header("Economy")]
     [SerializeField] private int playerMoney = 500000;
-
     [SerializeField] private int currentDay = 1;
+    [SerializeField] private int maxDays = 7;
+
+    private bool isWeekComplete = false;
+    private bool isGameOver = false;
+
+    public int MaxDays => maxDays;
+    public bool IsWeekComplete => isWeekComplete;
+
 
     [Header("Facilities")]
     [SerializeField] private FacilityManager facilityManager;
@@ -25,18 +35,19 @@ public class GameManager : MonoBehaviour
 
     [Header("Simulation")]
     [SerializeField] private WasteSpawner wasteSpawner;
-    [SerializeField] private TruckController truckPrefab;
+    [SerializeField] private TruckManager truckManager;
+    [SerializeField] private float laneSpacing = 4f;
     [SerializeField] private Transform truckSpawnPoint;
     [SerializeField] private Transform truckEndPoint;
     [SerializeField] private Transform transferStationPoint;
     [SerializeField] private float spawnPhaseDuration = 10f;
     [SerializeField] private float transferStationDelay = 2f;
 
+    private int cityWasteCount;
+    private bool isSimActive = false;
 
     public int PlayerMoney => playerMoney;
     public int CurrentDay => currentDay;
-
-    private bool isSimActive = false;
     public bool IsSimActive => isSimActive;
 
     private void Awake()
@@ -53,23 +64,33 @@ public class GameManager : MonoBehaviour
 
     public void DumpIntoLandfill(int amount)
     {
-        currentLandfillAmount += amount;
+        currentLandfillAmount = Mathf.Min(currentLandfillAmount + amount, maxLandfillAmount);
+        NotifyStatsChanged();
 
         if(currentLandfillAmount >= maxLandfillAmount)
         {
-            currentLandfillAmount = maxLandfillAmount;
             TriggerGameOver();
         }
     }
-    public void AdvanceDay()
+    private void AdvanceDay()
     {
         currentDay++;
-        OnDayChanged?.Invoke(currentDay);
 
         if(facilityManager != null)
         {
             ProcessfacilityDayPhase();
         }
+        if (currentDay >= maxDays)
+        {
+            isWeekComplete = true;
+            NotifyStatsChanged();
+            OnWeekComplete?.Invoke();
+            return;
+        }
+
+        currentDay++;
+        NotifyStatsChanged();
+
     }
 
     private void ProcessfacilityDayPhase()
@@ -93,8 +114,8 @@ public class GameManager : MonoBehaviour
                 facility.currentDaysElapsed = 0;
                 facility.ConsumeStorage();
 
-                int moneyEarned = facility.GetCurrentProductionAmount();
-                AddMoney(moneyEarned);
+                //int moneyEarned = facility.GetCurrentProductionAmount();
+                AddMoney(facility.GetCurrentProductionAmount());
             }
         }
     }
@@ -104,7 +125,7 @@ public class GameManager : MonoBehaviour
         if(playerMoney >= amount)
         {
             playerMoney -= amount;
-            OnMoneyChanged?.Invoke(playerMoney);
+            NotifyStatsChanged();
             return true;
         }
         return false;
@@ -113,18 +134,19 @@ public class GameManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         playerMoney += amount;
-        OnMoneyChanged?.Invoke(playerMoney);
+        NotifyStatsChanged();
     }
 
     private void TriggerGameOver()
     {
+        isGameOver = true;
         Debug.Log("Game Over");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void SetSimActive(bool active)
     {
-        if (isSimActive == active) return;
+        if (active && (isWeekComplete || isGameOver)) return;
 
         isSimActive = active;
         OnSimStateChanged?.Invoke(isSimActive);
@@ -148,28 +170,86 @@ public class GameManager : MonoBehaviour
         wasteSpawner.StopSpawning();
 
         // Second phase: truck collects waste
+        List<TruckInstance> owned = truckManager.OwnedTrucks;
+        if (owned.Count == 0) Debug.Log("No Trucks owned: all city waste goes to landfill");
+
         Vector3 driveDir = truckEndPoint.position - truckSpawnPoint.position;
         driveDir.y = 0f;
-        TruckController truck = Instantiate(truckPrefab, truckSpawnPoint.position, Quaternion.LookRotation(driveDir));
+        Vector3 side = Vector3.Cross(Vector3.up, driveDir.normalized);
+        Quaternion facing = Quaternion.LookRotation(driveDir);
 
-        bool routeDone = false;
+        List<TruckController> activeTrucks = new List<TruckController>();
+        int trucksFinished = 0;
         int collected = 0;
-        truck.OnRouteComplete += amount => { collected = amount; routeDone = true; };
-        truck.BeginRoute(truckEndPoint.position);
 
-        yield return new WaitUntil(() => routeDone);
+        for (int i = 0; i < owned.Count; i++)
+        {
+            float laneOffset = (i - (owned.Count - 1) / 2f) * laneSpacing;
+            Vector3 start = truckSpawnPoint.position + side * laneOffset;
+            Vector3 end = truckEndPoint.position + side * laneOffset;
+
+            TruckController truck = Instantiate(owned[i].template.truckPrefab, start, facing);
+            truck.Initialize(owned[i]);
+            truck.OnRouteComplete += amount => { collected += amount; trucksFinished++; };
+            truck.BeginRoute(end);
+            activeTrucks.Add(truck);
+        }
+
+        yield return new WaitUntil(() => trucksFinished >= activeTrucks.Count);
 
         // Third phase: teleport to transfer station, then remove truck
-        truck.TeleportTo(transferStationPoint);
+        foreach (TruckController truck in activeTrucks)
+            truck.TeleportTo(transferStationPoint);
+
         yield return new WaitForSeconds(transferStationDelay);
-        Destroy(truck.gameObject);
+
+        foreach (TruckController truck in activeTrucks)
+            Destroy(truck.gameObject);
 
         // Fourth phase: collected waste goes to facilities, overflow goes to landfill
         int overflow = facilityManager != null ? facilityManager.DeliverWaste(collected) : collected;
 
         int uncollected = wasteSpawner.ClearRemainingWaste(); // waste that the truck missed also goes to landfill
+        cityWasteCount = 0;
 
         DumpIntoLandfill(overflow + uncollected);
+        if (isGameOver) yield break;
+
         AdvanceDay();
+        SetSimActive(false);
+    }
+
+    // ---------- Stats Info ----------
+    public GameStats GetStats()
+    { 
+        return new GameStats
+        { 
+            money = playerMoney,
+            day = currentDay,
+            landfillAmount = currentLandfillAmount,
+            landfillMax = maxLandfillAmount,
+            maxDays = maxDays,
+            isWeekComplete = isWeekComplete,
+            facilityCount = facilityManager != null ? facilityManager.FacilityCount: 0,
+            facilityStorageUsed = facilityManager != null ? facilityManager.GetTotalStorageUsed() : 0,
+            facilityStorageMax = facilityManager != null ? facilityManager.GetTotalMaxStorage() : 0,
+            cityWasteCount = cityWasteCount,
+        };
+    }
+    public void NotifyStatsChanged()
+    {
+        OnStatsChanged?.Invoke(GetStats());
+    }
+
+    public void RegisterWasteSpawned()
+    {
+        cityWasteCount++;
+        NotifyStatsChanged();
+    }
+
+    public void RegisterWasteCollected()
+    {
+        cityWasteCount = Mathf.Max(0, cityWasteCount - 1);
+        NotifyStatsChanged();
     }
 }

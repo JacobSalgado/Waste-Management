@@ -60,6 +60,7 @@ public class WasteSpawner : MonoBehaviour
         {
             Vector3 randomPos = new Vector3(Random.Range(-15f, 30f), -10, Random.Range(-20f, 20f));
             GameObject newWaste = Instantiate(pizzaBox, _spawnerContainer.transform);
+            GameManager.Instance.RegisterWasteSpawned();
             newWaste.transform.localPosition = randomPos;
             newWaste.transform.localRotation = Quaternion.identity;
 

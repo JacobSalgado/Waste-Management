@@ -11,6 +11,8 @@ public class FacilityManager : MonoBehaviour
     [SerializeField] private List<FacilityInstance> activeDataInstance = new List<FacilityInstance>();
     [SerializeField] private List<FacilityWorldObject> activeVisualBuildings = new List<FacilityWorldObject>();
 
+    public int FacilityCount => activeDataInstance.Count;
+
     public List<FacilityInstance> ActiveDataInstance => activeDataInstance;
 
     public void PurchaseFacility(FacilityTemplate shopTemplate)
@@ -37,6 +39,7 @@ public class FacilityManager : MonoBehaviour
                 visualScript.dataInstance = newInstance;
                 activeVisualBuildings.Add(visualScript);
             }
+            GameManager.Instance.NotifyStatsChanged();
         }
     }
 
@@ -74,5 +77,21 @@ public class FacilityManager : MonoBehaviour
             remaining -= delivered;
         }
         return remaining;
+    }
+
+    public int GetTotalStorageUsed()
+    {
+        int total = 0;
+        foreach (FacilityInstance facility in activeDataInstance)
+            total += facility.currentStorageAmount;
+        return total;
+    }
+
+    public int GetTotalMaxStorage()
+    {
+        int total = 0;
+        foreach (FacilityInstance facility in activeDataInstance)
+            total += facility.GetMaxStorage();
+        return total;
     }
 }

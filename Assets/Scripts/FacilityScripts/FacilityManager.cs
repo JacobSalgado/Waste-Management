@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class FacilityManager : MonoBehaviour
 {
@@ -8,9 +9,9 @@ public class FacilityManager : MonoBehaviour
 
     public void PurchaseFacility(FacilityTemplate shopTemplate)
     {
-        float facilityCost = GetCurrentFacilityCost(shopTemplate);
+        int facilityCost = GetCurrentFacilityCost(shopTemplate);
 
-        if(GameManager.Instance.TrySpendMoney(cost))
+        if(GameManager.Instance.TrySpendMoney(facilityCost))
         {
             FacilityInstance newInstance = new FacilityInstance(shopTemplate);
             activeDataInstance.Add(newInstance);

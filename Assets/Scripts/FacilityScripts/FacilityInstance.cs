@@ -20,13 +20,22 @@ public class FacilityInstance : MonoBehaviour
 
         return Mathf.Max(calculatedProductionTime, template.minProductionTime);
     }
-    
+
     public int GetCurrentProductionAmount()
     {
         float curentProductionAmount = template.defaultMoneyProduction + (template.defaultMoneyProduction * (template.moneyProductionMultiplier * (currentUpgrade - 1)));
 
         return Mathf.RoundToInt(curentProductionAmount);
     }
+
+    /*
+    public int GetCurrentUpkeepCost()
+    {
+        float currentUpkeepCost = template.defaultUpkeepCost + (template.defaultUpkeepCost * (template.upgradeCostMultiplier * (currentUpgrade - 1)));
+
+        return Mathf.RoundToInt(currentUpkeepCost);
+    }
+    */
 
     public int GetMaxStorage()
     {

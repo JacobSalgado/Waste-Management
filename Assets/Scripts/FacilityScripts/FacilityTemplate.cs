@@ -11,6 +11,9 @@ public class FacilityTemplate : ScriptableObject
     public int defaultFacilityCost;
     public float facilityCostMultiplier;
 
+    //public int defaultUpkeepCost;
+    //public float upkeepCostMultiplier;
+
     public int defaultMoneyProduction;
     public float moneyProductionMultiplier;
 

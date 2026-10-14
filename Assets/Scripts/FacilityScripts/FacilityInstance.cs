@@ -14,6 +14,8 @@ public class FacilityInstance
         this.template = sharedTemplate;
     }
 
+    public bool IsProductionFacility => template.defaultMoneyProduction > 0;
+
     public int GetCurrentProductionTime()
     {
         int calculatedProductionTime = template.defaultProductionTime - (template.decreasedProductionTimePerUpgrade * (currentUpgrade - 1));

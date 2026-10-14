@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class FacilityManager : MonoBehaviour
 {
 
+    [SerializeField] private WasteProductionScript targetCollection;
+    [SerializeField] private Transform landfillLocation;
     [SerializeField] private Transform spawnPointParent;
 
     [SerializeField] private List<FacilityInstance> activeDataInstance = new List<FacilityInstance>();

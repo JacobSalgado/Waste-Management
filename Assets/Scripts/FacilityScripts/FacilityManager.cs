@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 public class FacilityManager : MonoBehaviour
 {
+
+    [SerializeField] private Transform spawnPointParent;
+
     [SerializeField] private List<FacilityInstance> activeDataInstance = new List<FacilityInstance>();
+    [SerializeField] private List<FacilityWorldObject> activeVisualBuildings = new List<FacilityWorldObject>();
 
     public List<FacilityInstance> ActiveDataInstance => activeDataInstance;
 
@@ -15,6 +19,22 @@ public class FacilityManager : MonoBehaviour
         {
             FacilityInstance newInstance = new FacilityInstance(shopTemplate);
             activeDataInstance.Add(newInstance);
+
+            Vector3 spawnPositon = new Vector3(activeVisualBuildings.Count * 3.5f, 0f, 0f);
+            if(spawnPointParent != null)
+            {
+                spawnPositon += spawnPointParent.position;
+            }
+
+            GameObject spawnedBuildingObject = Instantiate(shopTemplate.facilityPrefab, spawnPositon, Quaternion.identity, spawnPointParent);
+
+            FacilityWorldObject visualScript = spawnedBuildingObject.GetComponent<FacilityWorldObject>();
+
+            if(visualScript != null)
+            {
+                visualScript.dataInstance = newInstance;
+                activeVisualBuildings.Add(visualScript);
+            }
         }
     }
 

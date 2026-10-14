@@ -12,18 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a18031524cddb348b0292c8a7966513, type: 3}
   m_Name: TestFacility
   m_EditorClassIdentifier: Assembly-CSharp::FacilityTemplate
-  facilityID: 
-  facilityName: 
-  facilityPrefab: {fileID: 0}
-  defaultFacilityCost: 0
+  facilityID: facility_01
+  facilityName: Test Facility
+  facilityPrefab: {fileID: 7381930934380243870, guid: 6e5b2881cd4462141804c9e6fb7d72a2, type: 3}
+  defaultFacilityCost: 1000
   facilityCostMultiplier: 0
-  defaultMoneyProduction: 0
+  defaultMoneyProduction: 50
   moneyProductionMultiplier: 0
-  defaultProductionTime: 0
-  minProductionTime: 0
+  defaultProductionTime: 3
+  minProductionTime: 1
   decreasedProductionTimePerUpgrade: 0
   defaultUpgradeCost: 0
   upgradeCostMultiplier: 0
   storageConsumptionPerCycle: 0
-  defaultMaxStorageAmount: 0
+  defaultMaxStorageAmount: 1000
   storageLevelMultiplier: 0
+  deliveryPriority: 1

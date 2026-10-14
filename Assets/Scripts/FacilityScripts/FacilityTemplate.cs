@@ -4,6 +4,7 @@ using UnityEngine;
 public class FacilityTemplate : ScriptableObject
 {
 
+    public string facilityID;
     public string facilityName;
     public GameObject facilityPrefab;
 

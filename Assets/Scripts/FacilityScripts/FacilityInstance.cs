@@ -20,7 +20,7 @@ public class FacilityInstance : MonoBehaviour
 
         return Mathf.Max(calculatedProductionTime, template.minProductionTime);
     }
-
+    
     public int GetCurrentProductionAmount()
     {
         float curentProductionAmount = template.defaultMoneyProduction + (template.defaultMoneyProduction * (template.moneyProductionMultiplier * (currentUpgrade - 1)));
@@ -35,7 +35,7 @@ public class FacilityInstance : MonoBehaviour
         return Mathf.RoundToInt(currentMaxStorage);
     }
     
-    public int AddToStorage(int amount)
+    public void AddToStorage(int amount)
     {
         int maxStorage = GetMaxStorage();
         currentStorageAmount += amount;

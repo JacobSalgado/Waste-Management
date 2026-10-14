@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class FacilityInstance : MonoBehaviour
+public class FacilityInstance
 {
     public FacilityTemplate template;
     public int currentUpgrade = 1;

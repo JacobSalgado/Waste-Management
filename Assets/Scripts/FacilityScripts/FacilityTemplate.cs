@@ -28,4 +28,6 @@ public class FacilityTemplate : ScriptableObject
     public int defaultMaxStorageAmount;
     public float storageLevelMultiplier;
 
+    public int deliveryPriority = 1;
+
 }

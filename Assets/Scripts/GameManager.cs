@@ -169,7 +169,6 @@ public class GameManager : MonoBehaviour
 
         int uncollected = wasteSpawner.ClearRemainingWaste(); // waste that the truck missed also goes to landfill
 
-        // TODO: landfill, advance day things, etc.
         DumpIntoLandfill(overflow + uncollected);
         AdvanceDay();
     }

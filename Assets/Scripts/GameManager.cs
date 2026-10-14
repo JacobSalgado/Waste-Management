@@ -1,8 +1,13 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance{get; private set; }
+
+    // UI variables
+    public event Action<int> OnMoneyChanged;
+    public event Action<int> OnDayChanged;
 
     [SerializeField] private int playerMoney = 500000;
 
@@ -28,6 +33,7 @@ public class GameManager : MonoBehaviour
     public void AdvanceDay()
     {
         currentDay++;
+        OnDayChanged?.Invoke(currentDay);
 
         if(facilityManager != null)
         {
@@ -67,6 +73,7 @@ public class GameManager : MonoBehaviour
         if(playerMoney >= amount)
         {
             playerMoney -= amount;
+            OnMoneyChanged?.Invoke(playerMoney);
             return true;
         }
         return false;
@@ -75,5 +82,6 @@ public class GameManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         playerMoney += amount;
+        OnMoneyChanged?.Invoke(playerMoney);
     }
 }

@@ -9,11 +9,16 @@ public class GameManager : MonoBehaviour
     public event Action<int> OnMoneyChanged;
     public event Action<int> OnDayChanged;
 
+    [SerializeField] private int currentLandfillAmount;
+    [SerializeField] private int maxLandfillAmount;
+
+
     [SerializeField] private int playerMoney = 500000;
 
     [SerializeField] private int currentDay = 1;
 
     [SerializeField] private FacilityManager facilityManager;
+    [SerializeField] private WasteProductionScript wasteProductionLocation;
 
     public int PlayerMoney => playerMoney;
     public int CurrentDay => currentDay;
@@ -30,6 +35,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void DumpIntoLandfill(int amount)
+    {
+        currentLandfillAmount += amount;
+
+        if(currentLandfillAmount >= maxLandfillAmount)
+        {
+            currentLandfillAmount = maxLandfillAmount;
+            TriggerGameOver();
+        }
+    }
     public void AdvanceDay()
     {
         currentDay++;
@@ -83,5 +98,11 @@ public class GameManager : MonoBehaviour
     {
         playerMoney += amount;
         OnMoneyChanged?.Invoke(playerMoney);
+    }
+
+    private void TriggerGameOver()
+    {
+        Debug.Log("Game Over");
+        SceneLoader.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

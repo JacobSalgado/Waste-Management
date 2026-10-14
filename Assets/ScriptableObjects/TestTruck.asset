@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ea1fa365e96454f8d4a397ccf49e93, type: 3}
   m_Name: TestTruck
   m_EditorClassIdentifier: Assembly-CSharp::TruckTemplate
-  truckID: 
-  truckName: 
-  truckPrefab: {fileID: 0}
+  truckID: truck_01
+  truckName: Test Truck
+  truckPrefab: {fileID: 5384505823687566892, guid: 0f443ab19a87c6f49b0225d79f0a0d43, type: 3}
   defaultTruckCost: 50000
   truckCostMultiplier: 0.25
   defaultCapacity: 10

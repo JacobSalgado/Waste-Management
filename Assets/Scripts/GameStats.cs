@@ -7,7 +7,8 @@ public struct GameStats
     public int landfillMax;
     public int maxDays;
     public bool isWeekComplete;
-
+    public int truckCount;
+    public int truckCapcity;
     public int facilityCount;
     public int facilityStorageUsed;
     public int facilityStorageMax;

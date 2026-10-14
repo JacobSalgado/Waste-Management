@@ -56,7 +56,7 @@ public class FacilityManager : MonoBehaviour
 
     public int GetCurrentFacilityCost(FacilityTemplate template)
     {
-        float currentFacilityCost = template.defaultFacilityCost + (template.defaultFacilityCost * (template.facilityCostMultiplier * (GetOwnedFacilityTypeCount(template) - 1)));
+        float currentFacilityCost = template.defaultFacilityCost + (template.defaultFacilityCost * (template.facilityCostMultiplier * (GetOwnedFacilityTypeCount(template))));
 
         return Mathf.RoundToInt(currentFacilityCost);
     }

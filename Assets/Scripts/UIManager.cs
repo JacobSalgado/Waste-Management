@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI budgetText;
     [SerializeField] private TextMeshProUGUI dayCountText;
     [SerializeField] private TextMeshProUGUI landfillUsageText;
+    [SerializeField] private TextMeshProUGUI trucksText;
     [SerializeField] private TextMeshProUGUI facilitiesText;
     [SerializeField] private TextMeshProUGUI cityDirtinessText;
 
@@ -47,6 +48,7 @@ public class UIManager : MonoBehaviour
         budgetText.text = $"Budget: ${stats.money:N0}";
         dayCountText.text = $"Day {stats.day}";
         landfillUsageText.text = $"Landfill: {stats.LandfillPercent:P0} ({stats.landfillAmount}/{stats.landfillMax})";
+        trucksText.text = $"Trucks: {stats.truckCount}";
         facilitiesText.text = $"Facilities: {stats.facilityCount} | Storage: {stats.FacilityStoragePercent:P0}";
         cityDirtinessText.text = $"City Waste: {stats.cityWasteCount}";
 
@@ -67,6 +69,7 @@ public class UIManager : MonoBehaviour
         purchaseTruck.gameObject.SetActive(visible);
         budgetText.gameObject.SetActive(visible);
         dayCountText.gameObject.SetActive(visible);
+        trucksText.gameObject.SetActive(visible);
         landfillUsageText.gameObject.SetActive(visible);
         facilitiesText.gameObject.SetActive(visible);
         cityDirtinessText.gameObject.SetActive(visible);
@@ -90,7 +93,7 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnStatsChanged += RefreshStats;
+            GameManager.Instance.OnStatsChanged -= RefreshStats;
             GameManager.Instance.OnSimStateChanged -= UpdateSimButton;
             GameManager.Instance.OnWeekComplete -= ShowWeekComplete;
         }

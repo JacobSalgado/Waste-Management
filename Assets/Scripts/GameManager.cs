@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform truckSpawnPoint;
     [SerializeField] private Transform truckEndPoint;
     [SerializeField] private Transform transferStationPoint;
-    [SerializeField] private float spawnPhaseDuration = 10f;
+    [SerializeField] private float spawnPhaseDuration = 15f;
     [SerializeField] private float transferStationDelay = 2f;
 
     private int cityWasteCount;
@@ -74,8 +74,6 @@ public class GameManager : MonoBehaviour
     }
     private void AdvanceDay()
     {
-        currentDay++;
-
         if(facilityManager != null)
         {
             ProcessfacilityDayPhase();
@@ -87,7 +85,6 @@ public class GameManager : MonoBehaviour
             OnWeekComplete?.Invoke();
             return;
         }
-
         currentDay++;
         NotifyStatsChanged();
 
@@ -147,6 +144,7 @@ public class GameManager : MonoBehaviour
     public void SetSimActive(bool active)
     {
         if (active && (isWeekComplete || isGameOver)) return;
+        if (isSimActive == active) return;
 
         isSimActive = active;
         OnSimStateChanged?.Invoke(isSimActive);
@@ -170,6 +168,7 @@ public class GameManager : MonoBehaviour
         wasteSpawner.StopSpawning();
 
         // Second phase: truck collects waste
+        truckManager.SetParkedTrucksVisible(false);
         List<TruckInstance> owned = truckManager.OwnedTrucks;
         if (owned.Count == 0) Debug.Log("No Trucks owned: all city waste goes to landfill");
 
@@ -194,6 +193,7 @@ public class GameManager : MonoBehaviour
             truck.BeginRoute(end);
             activeTrucks.Add(truck);
         }
+        truckManager.SetParkedTrucksVisible(true);
 
         yield return new WaitUntil(() => trucksFinished >= activeTrucks.Count);
 
@@ -230,6 +230,8 @@ public class GameManager : MonoBehaviour
             landfillMax = maxLandfillAmount,
             maxDays = maxDays,
             isWeekComplete = isWeekComplete,
+            truckCount = truckManager != null ? truckManager.TruckCount : 0,
+            truckCapcity = truckManager != null ? truckManager.GetTotalCapacity() : 0,
             facilityCount = facilityManager != null ? facilityManager.FacilityCount: 0,
             facilityStorageUsed = facilityManager != null ? facilityManager.GetTotalStorageUsed() : 0,
             facilityStorageMax = facilityManager != null ? facilityManager.GetTotalMaxStorage() : 0,

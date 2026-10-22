@@ -26,7 +26,7 @@ public class SwitchCameraView : MonoBehaviour
         
     }
 
-    void switchCam()
+    public void switchCam()
     {
         officeCamera.enabled = !officeCamera.enabled;
         terrainCamera.enabled = !terrainCamera.enabled;

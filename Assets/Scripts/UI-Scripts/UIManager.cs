@@ -26,6 +26,9 @@ public class UIManager : MonoBehaviour
 
     private TextMeshProUGUI activeSimLabel;
 
+    [Header("Switch Camera Reference")]
+    [SerializeField] private SwitchCameraView switchCameraView;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -80,6 +83,7 @@ public class UIManager : MonoBehaviour
     void UpdateSimButton(bool active)
     {
         activeSimButton.gameObject.SetActive(!active && !GameManager.Instance.IsWeekComplete);
+        switchCameraView.switchCam(); // <-- this switches the camera when the user activates the sim, making it more seamlessly
     }
 
     void ShowWeekComplete()

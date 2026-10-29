@@ -3130,6 +3130,7 @@ MonoBehaviour:
   facilitiesText: {fileID: 1426131262}
   cityDirtinessText: {fileID: 496955348}
   weekCompleteText: {fileID: 1923038143}
+  switchCameraView: {fileID: 1634611053}
 --- !u!114 &1634611056
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -50,6 +50,7 @@ public class TruckManager : MonoBehaviour
             if (truck.template.truckID == template.truckID)
                 count++;
         }
+        Debug.Log("Truck Count: " + count);
         return count;
     }
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PathFinder
+public class Pathfinding
 {
     
 }

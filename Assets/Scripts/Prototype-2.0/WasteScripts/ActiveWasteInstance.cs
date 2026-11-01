@@ -1,16 +1,20 @@
 using UnityEngine;
 
-public class ActiveWasteInstance : MonoBehaviour
+[System.Serializable]
+public class ActiveWasteInstance
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public WasteData wasteData;
+    public float timeRemaining;
+
+    public ActiveWasteInstance(WasteData data)
     {
-        
+        wasteData = data;
+        timeRemaining = data.wasteLifetime;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool TimerCountdown(float deltaTime)
     {
-        
+        timeRemaining -= deltaTime;
+        return timeRemaining <= 0;
     }
 }

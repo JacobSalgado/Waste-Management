@@ -16,7 +16,8 @@ public class WasteData : ScriptableObject
     public string wasteID;
     public string wasteName;
     public Sprite wasteIcon;
-
+    public WasteType wasteType;
+    public float wasteLifetime;
 
 }
 

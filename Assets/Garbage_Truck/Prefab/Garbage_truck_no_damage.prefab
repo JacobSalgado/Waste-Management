@@ -3971,9 +3971,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4412848580378482}
-  - component: {fileID: -7205314585200759630}
   - component: {fileID: 7368058722834847314}
   - component: {fileID: -2564636030109695003}
+  - component: {fileID: -8151074256870423736}
   m_Layer: 0
   m_Name: Garbage_truck_no_damage
   m_TagString: Truck
@@ -4038,20 +4038,6 @@ Transform:
   - {fileID: 4301821902336800}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-7205314585200759630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988899524752356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84219a5481f77dc4188e8645165b5fbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TruckController
-  speed: 8
-  arriveDistance: 0.5
 --- !u!54 &7368058722834847314
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4100,3 +4086,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-8151074256870423736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988899524752356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c490462b27e032842a179453a7c7d448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Truck
+  moveSpeed: 20
+  turnSpeed: 540

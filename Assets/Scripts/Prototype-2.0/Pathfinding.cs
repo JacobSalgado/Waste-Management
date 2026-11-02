@@ -8,13 +8,24 @@ public class Pathfinding
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
 
+    public static Pathfinding Instance { get; private set; }
+
     private Grid<PathNode> grid;
     private List<PathNode> openList;
     private List<PathNode> closedList;
 
     public Pathfinding(int width, int height)
     {
+        Instance = this;
         grid = new Grid<PathNode>(width, height, 10f, Vector3.zero, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
+    }
+
+    // this lets the logic grid match the Tilemap's cell size and position
+    public Pathfinding(int width, int height, float cellSize, Vector3 originPosition)
+    {
+        Instance = this;
+        grid = new Grid<PathNode>(width, height, cellSize, originPosition,
+            (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
     }
 
     public Grid<PathNode> GetGrid()
@@ -27,8 +38,8 @@ public class Pathfinding
         PathNode startNode = grid.GetGridObject(startX, startY);
         PathNode endNode = grid.GetGridObject(endX, endY); 
 
-        openList = new List<PathNode> { startNode };
-        closedList = new List<PathNode>();
+        openList = new List<PathNode> { startNode };    // Holds the nodes to be evaluated next which allows the algorithm to explore options
+        closedList = new List<PathNode>();              // Contains nodes that have been fully processed which prevents re-evaluation
 
         for (int x = 0; x < grid.GetWidth(); x++)
         {
@@ -61,6 +72,12 @@ public class Pathfinding
             {
                 if (closedList.Contains(neighborNode)) continue;
 
+                if (!neighborNode.isWalkable)
+                {
+                    closedList.Add(neighborNode);
+                    continue;
+                }
+
                 int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighborNode);
                 if (tentativeGCost < neighborNode.gCost)
                 {
@@ -78,6 +95,20 @@ public class Pathfinding
         }
         // out of nodes on the openList
         return null;
+    }
+
+    // similar search as FindPath, but this returns world positions a GameObject can move to
+    public List<Vector3> FindWorldPath(int startX, int startY, int endX, int endY)
+    {
+        List<PathNode> nodePath = FindPath(startX, startY, endX, endY);
+        if (nodePath == null) return null;
+
+        List<Vector3> worldPath = new List<Vector3>(nodePath.Count);
+        foreach (PathNode node in nodePath)
+        {
+            worldPath.Add(GetCellCenter(node.x, node.y));
+        }
+        return worldPath;
     }
 
     private List<PathNode> GetNeighborList(PathNode currentNode)
@@ -115,9 +146,16 @@ public class Pathfinding
         return neighborList;
     }
 
-    private PathNode GetNode(int x, int y)
+    public PathNode GetNode(int x, int y)
     {
         return grid.GetGridObject(x, y);
+    }
+
+    // returns the world-space center of a cell
+    public Vector3 GetCellCenter(int x, int y)
+    {
+        float half = grid.GetCellSize() * 0.5f;
+        return grid.GetWorldPosition(x, y) + new Vector3(half, half, 0f);
     }
 
     private List<PathNode> CalculatePath(PathNode endNode)

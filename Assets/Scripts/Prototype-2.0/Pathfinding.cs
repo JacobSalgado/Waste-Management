@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
 
 public class Pathfinding
@@ -8,7 +7,7 @@ public class Pathfinding
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
 
-    public static Pathfinding Instance { get; private set; }
+    public static Pathfinding Instance { get; private set; } 
 
     private Grid<PathNode> grid;
     private List<PathNode> openList;
@@ -33,13 +32,17 @@ public class Pathfinding
         return grid;
     }
 
-    public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
+    public List<PathNode> FindPath(int startX, int startY, int endX, int endY, bool allowBlockedEnd = false)
     {
         PathNode startNode = grid.GetGridObject(startX, startY);
-        PathNode endNode = grid.GetGridObject(endX, endY); 
+        PathNode endNode = grid.GetGridObject(endX, endY);
+
+        if (startNode == null || endNode == null) return null;
 
         openList = new List<PathNode> { startNode };    // Holds the nodes to be evaluated next which allows the algorithm to explore options
         closedList = new List<PathNode>();              // Contains nodes that have been fully processed which prevents re-evaluation
+
+        if (!endNode.isWalkable && !allowBlockedEnd) return null;
 
         for (int x = 0; x < grid.GetWidth(); x++)
         {
@@ -72,7 +75,7 @@ public class Pathfinding
             {
                 if (closedList.Contains(neighborNode)) continue;
 
-                if (!neighborNode.isWalkable)
+                if (!neighborNode.isWalkable && neighborNode != endNode)
                 {
                     closedList.Add(neighborNode);
                     continue;
@@ -98,9 +101,9 @@ public class Pathfinding
     }
 
     // similar search as FindPath, but this returns world positions a GameObject can move to
-    public List<Vector3> FindWorldPath(int startX, int startY, int endX, int endY)
+    public List<Vector3> FindWorldPath(int startX, int startY, int endX, int endY, bool allowBlockedEnd = false)
     {
-        List<PathNode> nodePath = FindPath(startX, startY, endX, endY);
+        List<PathNode> nodePath = FindPath(startX, startY, endX, endY, allowBlockedEnd);
         if (nodePath == null) return null;
 
         List<Vector3> worldPath = new List<Vector3>(nodePath.Count);

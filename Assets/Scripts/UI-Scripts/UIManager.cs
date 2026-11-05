@@ -37,25 +37,6 @@ public class UIManager : MonoBehaviour
 
         SetGameplayUI(false);
         startButton.onClick.AddListener(StartGame);
-        activeSimButton.onClick.AddListener(() => GameManager.Instance.SetSimActive(true));
-
-        GameManager.Instance.OnStatsChanged += RefreshStats;
-        GameManager.Instance.OnSimStateChanged += UpdateSimButton;
-        GameManager.Instance.OnWeekComplete += ShowWeekComplete;
-
-        RefreshStats(GameManager.Instance.GetStats());
-    }
-
-    void RefreshStats(GameStats stats)
-    {
-        budgetText.text = $"Budget: ${stats.money:N0}";
-        dayCountText.text = $"Day {stats.day}";
-        landfillUsageText.text = $"Landfill: {stats.LandfillPercent:P0} ({stats.landfillAmount}/{stats.landfillMax})";
-        trucksText.text = $"Trucks: {stats.truckCount}";
-        facilitiesText.text = $"Facilities: {stats.facilityCount} | Storage: {stats.FacilityStoragePercent:P0}";
-        cityDirtinessText.text = $"City Waste: {stats.cityWasteCount}";
-
-        activeSimLabel.text = $"Start Day {stats.day}";
     }
 
 
@@ -76,13 +57,10 @@ public class UIManager : MonoBehaviour
         landfillUsageText.gameObject.SetActive(visible);
         facilitiesText.gameObject.SetActive(visible);
         cityDirtinessText.gameObject.SetActive(visible);
-
-        activeSimButton.gameObject.SetActive(visible && !GameManager.Instance.IsSimActive && !GameManager.Instance.IsWeekComplete);
     }
 
     void UpdateSimButton(bool active)
     {
-        activeSimButton.gameObject.SetActive(!active && !GameManager.Instance.IsWeekComplete);
         switchCameraView.switchCam(); // <-- this switches the camera when the user activates the sim, making it more seamlessly
     }
 
@@ -95,11 +73,6 @@ public class UIManager : MonoBehaviour
 
     void OnDestroy()
     {
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.OnStatsChanged -= RefreshStats;
-            GameManager.Instance.OnSimStateChanged -= UpdateSimButton;
-            GameManager.Instance.OnWeekComplete -= ShowWeekComplete;
-        }
+   
     }
 }

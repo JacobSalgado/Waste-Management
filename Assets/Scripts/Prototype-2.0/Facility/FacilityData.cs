@@ -1,14 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum WasteType
-{ 
-    GENERAL,
-    ORGANIC,
-    HAZARDOUS,
-    ELECTRONIC
-}
-
 [CreateAssetMenu(menuName = "Waste/FacilityData")]
 public class FacilityData : ScriptableObject
 {

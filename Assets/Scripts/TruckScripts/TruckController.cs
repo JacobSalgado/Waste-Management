@@ -66,7 +66,6 @@ public class TruckController : MonoBehaviour
         if (isDriving && other.CompareTag("Waste"))
         {
             wasteCollected++;
-            GameManager.Instance.RegisterWasteCollected();
             Destroy(other.gameObject);
         }
     }

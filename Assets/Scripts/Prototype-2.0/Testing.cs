@@ -20,8 +20,8 @@ public class Testing : MonoBehaviour
     [SerializeField] private int gridWidth = 10;
     [SerializeField] private int gridHeight = 10;
 
-    [Header("Visuals")]
-    [SerializeField] private PathfindingVisual pathfindingVisual;
+    //[Header("Visuals")]
+    //[SerializeField] private PathfindingVisual pathfindingVisual;
 
     [Header("Trucks")]
     [SerializeField] private Truck truckPrefab;
@@ -57,7 +57,7 @@ public class Testing : MonoBehaviour
 
     private void Start()
     {
-        pathfindingVisual.SetGrid(pathfinding.GetGrid());
+        //pathfindingVisual.SetGrid(pathfinding.GetGrid());
     }
 
     private void PlaceFacilities()

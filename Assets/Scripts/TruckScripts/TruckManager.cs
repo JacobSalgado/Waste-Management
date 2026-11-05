@@ -22,8 +22,6 @@ public class TruckManager : MonoBehaviour
             TruckInstance newTruck = new TruckInstance(shopTemplate);
             ownedTrucks.Add(newTruck);
             SpawnParkedTruck(newTruck);
-
-            GameManager.Instance.NotifyStatsChanged();
         }
         else
         {
@@ -36,7 +34,6 @@ public class TruckManager : MonoBehaviour
         if (GameManager.Instance.TrySpendMoney(truck.GetUpgradeCost()))
         {
             truck.Upgrade();
-            GameManager.Instance.NotifyStatsChanged();
             return true;
         }
         return false;

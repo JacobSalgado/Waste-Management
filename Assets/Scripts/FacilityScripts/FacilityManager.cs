@@ -39,7 +39,6 @@ public class FacilityManager : MonoBehaviour
                 visualScript.dataInstance = newInstance;
                 activeVisualBuildings.Add(visualScript);
             }
-            GameManager.Instance.NotifyStatsChanged();
         }
     }
 

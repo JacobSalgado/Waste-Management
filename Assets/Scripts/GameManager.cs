@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
 
 
     public int PlayerMoney => playerMoney;
-    public int CurrentDay => currentDay;
 
     private void Awake()
     {
@@ -39,7 +38,6 @@ public class GameManager : MonoBehaviour
     private void AdvanceShift()
     {
         currentShift++;
-        NotifyStatsChanged();
     }
 
     public bool TrySpendMoney(int amount)
@@ -47,7 +45,6 @@ public class GameManager : MonoBehaviour
         if(playerMoney >= amount)
         {
             playerMoney -= amount;
-            NotifyStatsChanged();
             return true;
         }
         return false;
@@ -56,7 +53,6 @@ public class GameManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         playerMoney += amount;
-        NotifyStatsChanged();
     }
 
     private void TriggerGameOver()
@@ -64,22 +60,6 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         Debug.Log("Game Over");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    // ---------- Stats Info ----------
-    public GameStats GetStats()
-    { 
-        return new GameStats
-        { 
-            money = playerMoney,
-            shift = currentShift,
-            truckCount = truckManager != null ? truckManager.TruckCount : 0,
-            truckCapcity = truckManager != null ? truckManager.GetTotalCapacity() : 0,
-        };
-    }
-    public void NotifyStatsChanged()
-    {
-        OnStatsChanged?.Invoke(GetStats());
     }
 
 }

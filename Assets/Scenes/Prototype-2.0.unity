@@ -8592,7 +8592,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1317173974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10409,7 +10409,7 @@ GameObject:
   - component: {fileID: 1713839562}
   - component: {fileID: 1713839561}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: FacilityToolCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12474,7 +12474,6 @@ MonoBehaviour:
   tilemapGrid: {fileID: 273934774}
   gridWidth: 10
   gridHeight: 10
-  pathfindingVisual: {fileID: 1327128217}
   truckPrefab: {fileID: -8151074256870423736, guid: 647508f49176aa744a9c5eda586a3b09, type: 3}
   spawnCell: {x: 0, y: 0}
   leftMouseClick:

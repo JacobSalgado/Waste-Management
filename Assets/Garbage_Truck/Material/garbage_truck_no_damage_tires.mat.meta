@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: dfc118049fde0e64887eea5a6c590bb7
+timeCreated: 1529624358
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 70514
+  packageName: Garbage Truck HQ
+  packageVersion: 1.0
+  assetPath: Assets/Garbage_Truck/Material/garbage_truck_no_damage_tires.mat
+  uploadId: 253159

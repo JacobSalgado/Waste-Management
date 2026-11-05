@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 3295c69d116fd6a4199654e7a09ed1dd
+timeCreated: 1529624358
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 70514
+  packageName: Garbage Truck HQ
+  packageVersion: 1.0
+  assetPath: Assets/Garbage_Truck/Material/garbage_truck_damage.mat
+  uploadId: 253159

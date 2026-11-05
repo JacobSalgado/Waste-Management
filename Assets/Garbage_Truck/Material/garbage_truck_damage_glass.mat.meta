@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 20d1f471af6f26649a15d08f183cd20e
+timeCreated: 1529624358
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 70514
+  packageName: Garbage Truck HQ
+  packageVersion: 1.0
+  assetPath: Assets/Garbage_Truck/Material/garbage_truck_damage_glass.mat
+  uploadId: 253159

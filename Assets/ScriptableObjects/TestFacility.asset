@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a18031524cddb348b0292c8a7966513, type: 3}
+  m_Name: TestFacility
+  m_EditorClassIdentifier: Assembly-CSharp::FacilityTemplate
+  facilityID: facility_01
+  facilityName: Test Facility
+  facilityPrefab: {fileID: 7381930934380243870, guid: 6e5b2881cd4462141804c9e6fb7d72a2, type: 3}
+  defaultFacilityCost: 1000
+  facilityCostMultiplier: 0
+  defaultMoneyProduction: 50
+  moneyProductionMultiplier: 0
+  defaultProductionTime: 3
+  minProductionTime: 1
+  decreasedProductionTimePerUpgrade: 0
+  defaultUpgradeCost: 0
+  upgradeCostMultiplier: 0
+  storageConsumptionPerCycle: 0
+  defaultMaxStorageAmount: 1000
+  storageLevelMultiplier: 0
+  deliveryPriority: 1

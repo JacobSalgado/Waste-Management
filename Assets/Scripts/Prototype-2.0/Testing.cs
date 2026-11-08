@@ -172,28 +172,31 @@ public class Testing : MonoBehaviour
 
     private void OnLeftClick(InputAction.CallbackContext context)
     {
-        Vector3 worldPosition = GetMouseWorldPosition();
-        pathfinding.GetGrid().GetXY(worldPosition, out int x, out int y);
-        Vector2Int clickedCell = new Vector2Int(x, y);
-        bool targetIsFacility = facilitiesByCell.ContainsKey(clickedCell);
-        Debug.Log($"world: {worldPosition} cell: ({x}, {y})");
-
-        List<Vector3> path = pathfinding.FindWorldPath(spawnCell.x, spawnCell.y, x, y, targetIsFacility);
-        Debug.Log($"path: {(path == null ? "null" : path.Count + " nodes")}");
-
-        if (path == null)
+        if (!Pause.GameIsPaused)
         {
-            Debug.Log($"No path from {spawnCell} to ({x}, {y})");
-            return;
-        }
+            Vector3 worldPosition = GetMouseWorldPosition();
+            pathfinding.GetGrid().GetXY(worldPosition, out int x, out int y);
+            Vector2Int clickedCell = new Vector2Int(x, y);
+            bool targetIsFacility = facilitiesByCell.ContainsKey(clickedCell);
+            Debug.Log($"world: {worldPosition} cell: ({x}, {y})");
 
-        SpawnTruck(path);
+            List<Vector3> path = pathfinding.FindWorldPath(spawnCell.x, spawnCell.y, x, y, targetIsFacility);
+            Debug.Log($"path: {(path == null ? "null" : path.Count + " nodes")}");
 
-        if (path != null)
-        {
-            for (int i = 0; i < path.Count - 1; i++)
+            if (path == null)
             {
-                Debug.DrawLine(path[i], path[i + 1], Color.green, 5f);
+                Debug.Log($"No path from {spawnCell} to ({x}, {y})");
+                return;
+            }
+
+            SpawnTruck(path);
+
+            if (path != null)
+            {
+                for (int i = 0; i < path.Count - 1; i++)
+                {
+                    Debug.DrawLine(path[i], path[i + 1], Color.green, 5f);
+                }
             }
         }
     }

@@ -3,36 +3,44 @@ using UnityEngine.InputSystem;
 
 public class Pause : MonoBehaviour
 {
-    public GameObject pauseMenuUI;
-    private bool isPaused = false;
+    public static bool GameIsPaused = false;
 
-    [Header("Input")]
-    [SerializeField]
-    private InputAction escapeButton =
-        new InputAction("LeftClick", InputActionType.Button, "<Mouse>/leftButton");
+    public GameObject pauseMenuUI;
+
+    public InputAction pauseButton;
+
+    private void Awake()
+    {
+        pauseButton.Enable();
+    }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (pauseButton.triggered)
         {
-            if (isPaused)
+            Debug.Log("Escape Key being pressed!");
+            if (GameIsPaused)
+            {
                 ResumeGame();
+            }
             else
+            {
                 PauseGame();
+            }
         }
     }
 
-    public void ResumeGame()
+    void ResumeGame()
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
-        isPaused = false;
+        GameIsPaused = false;
     }
 
-    public void PauseGame()
+    void PauseGame()
     {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
-        isPaused = true;
+        GameIsPaused = true;
     }
 }

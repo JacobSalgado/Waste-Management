@@ -3,8 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class Start : MonoBehaviour
 {
-    public void PlayGame()
+    [SerializeField] private Pause pauseScript;
+
+    public void PlayGame()  
     {
+        //pauseScript.ResumeGame();
+        Pause.GameIsPaused = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

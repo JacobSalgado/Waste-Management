@@ -39,10 +39,25 @@ public class Testing : MonoBehaviour
     [SerializeField] private List<FacilityPlacement> facilityPlacements;
     [SerializeField] private Transform facilitiesParent; // empty object to hold all instantiated facilities
 
+    [Header("Welcome UI")]
+    [SerializeField] private GameObject welcomePanel;
+    [SerializeField] private GameObject directionsPanel;
+
     private readonly List<Facility> facilities = new List<Facility>();
     private readonly Dictionary<Vector2Int, Facility> facilitiesByCell = new Dictionary<Vector2Int, Facility>();
     
-    private void Awake()
+    private void Start()
+    {
+        //pathfindingVisual.SetGrid(pathfinding.GetGrid());
+    }
+
+    public void BeginGame()
+    {
+        CreateTileMapGrid();
+        PlaceFacilities();
+    }
+
+    private void CreateTileMapGrid()
     {
         if (tilemapGrid != null)
         {
@@ -51,13 +66,6 @@ public class Testing : MonoBehaviour
         }
         else
             pathfinding = new Pathfinding(gridWidth, gridHeight);
-
-        PlaceFacilities();
-    }
-
-    private void Start()
-    {
-        //pathfindingVisual.SetGrid(pathfinding.GetGrid());
     }
 
     private void PlaceFacilities()

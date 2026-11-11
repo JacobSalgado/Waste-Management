@@ -1,40 +1,55 @@
+using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
+    [SerializeField] private float moveSpeed = 10f;
+    [SerializeField] private float zoomSpeed = 5f;
+    private Vector3 lastMousePosition;
+
+    [Header("Input")]
     [SerializeField]
     private InputAction rightMouseClick =
         new InputAction("RightClick", InputActionType.Button, "<Mouse>/rightButton");
     [SerializeField]
     private InputAction mousePosition =
         new InputAction("MousePosition", InputActionType.Value, "<Pointer>/position");
+    [SerializeField] private InputActionReference scrollAction;
 
-    [SerializeField] private Camera cam;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Update()
     {
-        
+        // zoom in and out with scroll wheel
+        float scrollY = scrollAction.action.ReadValue<Vector2>().y;
+        transform.position += transform.forward * scrollY * zoomSpeed;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnRightClick(InputAction.CallbackContext context)
     {
-        
+        Vector3 worldPosition = GetMouseWorldPosition();
+        transform.position -= new Vector3(worldPosition.x, 0, worldPosition.y) * moveSpeed * Time.deltaTime;
     }
 
-    private bool TryGetGridPoint(Vector2 screenPos, out Vector3 point)
+    private Vector3 GetMouseWorldPosition()
     {
-        Plane gridPlane = new Plane(Vector3.forward, Vector3.zero);
-        Ray ray = cam.ScreenPointToRay(screenPos);
+        Vector2 screenPosition = Mouse.current.position.ReadValue();
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(
+            new Vector3(screenPosition.x, screenPosition.y, -Camera.main.transform.position.z));
+        worldPosition.z = 0f;
+        return worldPosition;
+    }
 
-        if (gridPlane.Raycast(ray, out float distance))
-        {
-            point = ray.GetPoint(distance);
-            return true;
-        }
-        point = default;
-        return false;
+    private void OnEnable()
+    {
+        rightMouseClick.Enable();
+        mousePosition.Enable();
+        rightMouseClick.performed += OnRightClick;
+    }
+
+    private void OnDisable()
+    {
+        rightMouseClick.performed -= OnRightClick;
+        rightMouseClick.Disable();
+        mousePosition.Disable();
     }
 }

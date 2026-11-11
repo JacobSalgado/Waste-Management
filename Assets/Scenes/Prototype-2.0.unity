@@ -14765,8 +14765,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Testing
   tilemapGrid: {fileID: 273934774}
-  gridWidth: 10
-  gridHeight: 10
+  gridWidth: 20
+  gridHeight: 15
   truckPrefab: {fileID: -8151074256870423736, guid: 647508f49176aa744a9c5eda586a3b09, type: 3}
   spawnCell: {x: 0, y: 0}
   leftMouseClick:

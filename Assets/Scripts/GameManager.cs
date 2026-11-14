@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     [Heaader("Shift")]
     public float shiftDuration = 300f;
-    private float shiftTimeRemaining;
+    private float shiftTimeRemaining{ get; set; }
     private bool isShiftActive = false;
 
     public int currentShift = 0;
@@ -38,6 +38,19 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void Update()
+    {
+        if(isShiftActive)
+        {
+            shiftTimeRemaining -= Time.deltaTime;
+
+            if(shiftTimeRemaining <= 0)
+            {
+                EndShift();
+            }
         }
     }
 

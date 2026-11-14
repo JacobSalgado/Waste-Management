@@ -3,15 +3,16 @@ using System.Collections.Generic;
 
 public class WasteManager : MonoBehaviour
 {
-    public List<WasteData> inpectorStartingWaste = new List<WasteData>();
+    [SerializeField] private List<WasteData> possibleWasteTypes = new List<WasteData>();
     public List<ActiveWasteInstance> wasteList = new List<ActiveWasteInstance>();
+
+    private float baseSpawnInterval = 60f;
+    private float intervalReduction = 10f;
+    private float currentSpawnInterval;
 
     public void Start()
     {
-        foreach (WasteData item in inpectorStartingWaste)
-        {
-            wasteList.Add(new ActiveWasteInstance(item));
-        }
+        
     }
 
     private void Update()
@@ -35,5 +36,16 @@ public class WasteManager : MonoBehaviour
         ActiveWasteInstance expiredWaste = wasteList[index];
     
         wasteList.RemoveAt(index);
+    }
+
+    private void CalculateSpawnInterval()
+    {
+        int currentShift = GameManager.Instance.currentShift;
+        currentSpawnInterval = Mathf.Max(10f, baseSpawnInterval - ((currentShift - 1) * intervalReduction));
+    }
+    private void SpawnWaste()
+    {
+        WasteData randomWaste = possibleWasteTypes[Random.Range(0, possibleWasteTypes.Count)];
+        AddWasteObjectToList(randomWaste);
     }
 }

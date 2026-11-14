@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,10 +16,12 @@ public class GameManager : MonoBehaviour
     [Header("Economy")]
     [SerializeField] private int playerMoney = 500000;
 
-    [Heaader("Shift")]
+    [Header("Shift Management")]
     public float shiftDuration = 300f;
-    private float shiftTimeRemaining{ get; set; }
+    [SerializeField] private float shiftTimeRemaining;
+    public float ShiftTimeRemaining => shiftTimeRemaining;
     private bool isShiftActive = false;
+    public bool IsShiftActive => isShiftActive;
 
     public int currentShift = 0;
 
@@ -39,6 +40,10 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    private void Start()
+    {
+        
     }
 
     private void Update()
@@ -59,6 +64,7 @@ public class GameManager : MonoBehaviour
         currentShift++;
         shiftTimeRemaining = shiftDuration;
         isShiftActive = true;
+        WasteManager.Instance.CalculateSpawnInterval();
 
         Debug.Log($"Shift {currentShift} started. Duration: {shiftDuration} seconds.");
     }

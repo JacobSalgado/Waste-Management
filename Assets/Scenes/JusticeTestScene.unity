@@ -14745,6 +14745,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2085310103}
   - component: {fileID: 2085310102}
+  - component: {fileID: 2085310104}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -14836,6 +14837,75 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 28.91141, y: 48.26052, z: -33.58559}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2085310104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085310101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e950bfde1716454e824ea6f6e7da3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  currentLandfillAmount: 0
+  maxLandfillAmount: 50
+  playerMoney: 500000
+  shiftDuration: 300
+  shiftTimeRemaining: 0
+  currentShift: 0
+--- !u!1 &2091539252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2091539254}
+  - component: {fileID: 2091539253}
+  m_Layer: 0
+  m_Name: WasteManger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2091539253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091539252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5828a59794e7e104289138ec0f555a91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WasteManager
+  possibleWasteTypes:
+  - {fileID: 11400000, guid: 7b1b37ef7651cd34ca1688f4c56316f2, type: 2}
+  - {fileID: 11400000, guid: f99b0abcc76c38849a6b09401f1abb42, type: 2}
+  wasteList: []
+  baseSpawnInterval: 60
+  intervalReduction: 10
+  spawnIntervalRemaining: 0
+--- !u!4 &2091539254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091539252}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 670.292, y: 388.35657, z: -375.253}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15342,6 +15412,7 @@ SceneRoots:
   - {fileID: 567355071}
   - {fileID: 1317173977}
   - {fileID: 2085310103}
+  - {fileID: 2091539254}
   - {fileID: 846355437}
   - {fileID: 1593298751}
   - {fileID: 1713839564}

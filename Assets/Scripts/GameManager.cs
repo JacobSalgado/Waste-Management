@@ -16,7 +16,13 @@ public class GameManager : MonoBehaviour
 
     [Header("Economy")]
     [SerializeField] private int playerMoney = 500000;
-    public int currentShift = 1;
+
+    [Heaader("Shift")]
+    public float shiftDuration = 300f;
+    private float shiftTimeRemaining;
+    private bool isShiftActive = false;
+
+    public int currentShift = 0;
 
     private bool isGameOver = false;
 
@@ -38,6 +44,33 @@ public class GameManager : MonoBehaviour
     private void AdvanceShift()
     {
         currentShift++;
+        shiftTimeRemaining = shiftDuration;
+        isShiftActive = true;
+
+        Debug.Log($"Shift {currentShift} started. Duration: {shiftDuration} seconds.");
+    }
+
+    public void StartShift()
+    {
+        if(isGameOver)
+        {
+            Debug.Log("Cannot start a new shift. The game is over.");
+            return;
+        }
+
+        if(!isShiftActive)
+        {
+            AdvanceShift();
+        }
+    }
+
+    public void EndShift()
+    {
+        if(isShiftActive)
+        {
+            isShiftActive = false;
+            Debug.Log($"Shift {currentShift} ended.");
+        }
     }
 
     public bool TrySpendMoney(int amount)

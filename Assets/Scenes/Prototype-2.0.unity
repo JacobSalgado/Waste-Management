@@ -4922,7 +4922,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -299.328, y: 141.1556}
+  m_AnchoredPosition: {x: -299.328, y: 6.7852}
   m_SizeDelta: {x: 360.0834, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &326639851
@@ -5020,16 +5020,16 @@ MonoBehaviour:
   m_Padding:
     m_Left: 12
     m_Right: 12
-    m_Top: 12
+    m_Top: 6
     m_Bottom: 6
-  m_ChildAlignment: 0
-  m_Spacing: 6
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildAlignment: 4
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
-  m_ChildScaleWidth: 1
-  m_ChildScaleHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
 --- !u!1 &349335892
 GameObject:
@@ -17232,6 +17232,8 @@ MonoBehaviour:
   facilityPlacements:
   - data: {fileID: 11400000, guid: d413f6a3479b51d49823b4c246f43cdb, type: 2}
     cell: {x: 2, y: 3}
+  - data: {fileID: 11400000, guid: 108eace41f71c294685b17bec260cb4f, type: 2}
+    cell: {x: 10, y: 12}
   facilitiesParent: {fileID: 1593298751}
   welcomePanel: {fileID: 0}
   directionsPanel: {fileID: 0}

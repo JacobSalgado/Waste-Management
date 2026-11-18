@@ -45,7 +45,7 @@ public class Grid<TGridObject>
             }
         }
 
-        bool showDebug = true;
+        bool showDebug = false;
         //this draws out the grid so u can see it
         if (showDebug)
         {

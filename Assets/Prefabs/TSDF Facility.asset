@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f965d9bf054aac46b43db451a098265, type: 3}
-  m_Name: TestSmall
+  m_Name: TSDF Facility
   m_EditorClassIdentifier: Assembly-CSharp::FacilityData
-  displayName: Energy-from-Waste (EfW) Facility
-  description: A plant that converts non-recyclable waste materials into usuable
-    energy, typically in the form of electricity or heat, through processes like
-    incineration or anaerobic digestion.
-  acceptedWaste: 00000000
-  prefab: {fileID: 4628015560601045738, guid: 413c3de18b4029143bc661e479ff9877, type: 3}
+  displayName: Treatment, Storage, and Disposal Facilities (TSDFs)
+  description: Specialized facilities that manage hazardous waste by treating, storing,
+    and disposing of it safely.
+  acceptedWaste: 02000000
+  prefab: {fileID: 5018779990540609617, guid: 870f7157206e9ee48a98c5d7d99aac21, type: 3}
   footprint: {x: 1, y: 1}
   dockOffset: {x: 0, y: 0}

@@ -5473,6 +5473,7 @@ GameObject:
   - component: {fileID: 667879344}
   - component: {fileID: 667879347}
   - component: {fileID: 667879348}
+  - component: {fileID: 667879349}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5547,7 +5548,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 667879343}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 48.5, y: 50.5, z: -104.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5614,6 +5615,108 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_MaxRayIntersections: 0
+--- !u!114 &667879349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667879343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae537fec68e9827449b2ee39c1360ddc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  moveSpeed: 10
+  zoomSpeed: 5
+  moveTime: 10
+  scrollAction:
+    m_Name: Scroll
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: c26a74cc-c1dd-45f8-9688-d74455d5bca8
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 1245b1cb-96c5-48bf-a291-e70b0c5551cf
+      m_Path: <Mouse>/scroll/y
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Scroll
+      m_Flags: 0
+    m_Flags: 0
+  moveAction:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: 417365b0-a616-4c0b-a438-a9eddad49bd6
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 90d57001-94dd-419c-a104-aab2ac01cb97
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 4
+    - m_Name: up
+      m_Id: e7027d18-f77e-4c6e-8ec7-bc53621e193c
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: down
+      m_Id: fadf275c-7517-43d1-8c83-be6c3d5c580b
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: left
+      m_Id: f3270ed7-6cd4-49c4-923c-56a531940e13
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: right
+      m_Id: e13dc0e1-cb89-47fb-a9bf-e648d1e99311
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    m_Flags: 0
+  rightMouseClick:
+    m_Name: Right Mouse Click
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e29d2ec1-8235-48bd-b132-aa8c17f8651d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 1994e7af-1a7c-46f7-bb55-c887baa948b4
+      m_Path: <Mouse>/rightButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Right Mouse Click
+      m_Flags: 0
+    m_Flags: 0
+  cam: {fileID: 667879345}
+  newPosition: {x: 0, y: 0, z: 0}
+  closestZoom: -20
+  farthestZoom: -150
 --- !u!4 &672749965 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 292b878b1fb26704aa0f0328ec46074d, type: 3}
@@ -15336,7 +15439,6 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 667879346}
   - {fileID: 807644564}
   - {fileID: 273934775}
   - {fileID: 567355071}
@@ -15346,3 +15448,4 @@ SceneRoots:
   - {fileID: 1593298751}
   - {fileID: 1713839564}
   - {fileID: 1666883908}
+  - {fileID: 667879346}

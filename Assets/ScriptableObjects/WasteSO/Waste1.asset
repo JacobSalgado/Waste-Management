@@ -15,4 +15,5 @@ MonoBehaviour:
   wasteID: 
   wasteName: 
   wasteIcon: {fileID: 0}
-  wasteLifetime: 0
+  wasteType: 0
+  wasteLifetime: 120

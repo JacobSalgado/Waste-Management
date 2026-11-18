@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +15,15 @@ public class GameManager : MonoBehaviour
 
     [Header("Economy")]
     [SerializeField] private int playerMoney = 500000;
-    public int currentShift = 1;
+
+    [Header("Shift Management")]
+    public float shiftDuration = 300f;
+    [SerializeField] private float shiftTimeRemaining;
+    public float ShiftTimeRemaining => shiftTimeRemaining;
+    private bool isShiftActive = false;
+    public bool IsShiftActive => isShiftActive;
+
+    public int currentShift = 0;
 
     private bool isGameOver = false;
 
@@ -34,10 +41,55 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void Start()
+    {
+        
+    }
+
+    private void Update()
+    {
+        if(isShiftActive)
+        {
+            shiftTimeRemaining -= Time.deltaTime;
+
+            if(shiftTimeRemaining <= 0)
+            {
+                EndShift();
+            }
+        }
+    }
 
     private void AdvanceShift()
     {
         currentShift++;
+        shiftTimeRemaining = shiftDuration;
+        isShiftActive = true;
+        WasteManager.Instance.CalculateSpawnInterval();
+
+        Debug.Log($"Shift {currentShift} started. Duration: {shiftDuration} seconds.");
+    }
+
+    public void StartShift()
+    {
+        if(isGameOver)
+        {
+            Debug.Log("Cannot start a new shift. The game is over.");
+            return;
+        }
+
+        if(!isShiftActive)
+        {
+            AdvanceShift();
+        }
+    }
+
+    public void EndShift()
+    {
+        if(isShiftActive)
+        {
+            isShiftActive = false;
+            Debug.Log($"Shift {currentShift} ended.");
+        }
     }
 
     public bool TrySpendMoney(int amount)

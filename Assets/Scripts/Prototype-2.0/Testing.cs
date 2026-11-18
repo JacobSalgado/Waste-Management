@@ -221,6 +221,7 @@ public class Testing : MonoBehaviour
         if (node == null) return;
 
         node.SetIsWalkable(!node.isWalkable);
+        Debug.Log($"Cell ({x}, {y}) walkable: {node.isWalkable}");
     }
 
     private Vector3 GetMouseWorldPosition()

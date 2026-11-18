@@ -195,6 +195,11 @@ public class Testing : MonoBehaviour
     {
         if (!Pause.GameIsPaused)
         {
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), out RaycastHit hit))
+                Debug.Log($"Ray hit: {hit.collider.name}");
+            else
+                Debug.Log("Ray hit nothing");
+
             Vector3 worldPosition = GetMouseWorldPosition();
             pathfinding.GetGrid().GetXY(worldPosition, out int x, out int y);
             Vector2Int clickedCell = new Vector2Int(x, y);

@@ -37,6 +37,7 @@ public class FacilityTooltip : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log("Tooltip subscribed");
         Facility.HoverStarted += Show;
         Facility.HoverEnded += HandleHoverEnded;
     }
@@ -49,6 +50,7 @@ public class FacilityTooltip : MonoBehaviour
 
     private void Show(Facility facility)
     {
+        Debug.Log($"Show: {facility.name}");
         if (facility.Data == null) return;
 
         target = facility;
@@ -59,6 +61,7 @@ public class FacilityTooltip : MonoBehaviour
         acceptsText.text = "Accepts: " + FormatWaste(data.acceptedWaste);
 
         canvasGroup.alpha = 1f;
+        Debug.Log($"Tooltip at {rectTransform.position}, size {rectTransform.rect.size}");
         UpdatePosition();
     }
 
@@ -93,15 +96,22 @@ public class FacilityTooltip : MonoBehaviour
             ? target.ToolTipAnchor.position
             : target.transform.position;
 
-        // World point on the grid's right edge, level with the facility
-        Grid<PathNode> grid = Pathfinding.Instance.GetGrid();
-        Vector3 rightEdge = grid.GetWorldPosition(grid.GetWidth(), 0);
-        rightEdge.y = anchor.y;
+        Vector2 screenPoint = cam.WorldToScreenPoint(anchor);
 
-        float edgeScreenX = cam.WorldToScreenPoint(rightEdge).x;
-        float facilityScreenY = cam.WorldToScreenPoint(anchor).y;
+        //picks a side: facility on the left half of the screen → panel to its right, and vice versa
+        bool showOnRight = screenPoint.x < Screen.width * 0.5f;
+        rectTransform.pivot = new Vector2(showOnRight ? 0f : 1f, 0.5f);
 
-        rectTransform.position = new Vector2(edgeScreenX, facilityScreenY) + screenOffset;
+        Vector2 offset = new Vector2(showOnRight ? screenOffset.x : -screenOffset.x, screenOffset.y);
+        Vector2 position = screenPoint + offset;
+
+        // Keep the whole panel on screen
+        Vector2 size = rectTransform.rect.size * rectTransform.lossyScale.x; // panel size in screen pixels
+        Vector2 pivot = rectTransform.pivot;
+        position.x = Mathf.Clamp(position.x, size.x * pivot.x, Screen.width - size.x * (1f - pivot.x));
+        position.y = Mathf.Clamp(position.y, size.y * pivot.y, Screen.height - size.y * (1f - pivot.y));
+
+        rectTransform.position = position;
     }
 
     // HAZARDOUS → Hazardous, joined with commas

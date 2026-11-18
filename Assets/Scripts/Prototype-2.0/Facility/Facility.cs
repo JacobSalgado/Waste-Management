@@ -30,6 +30,7 @@ public class Facility : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log($"Enter: {name}");
         HoverStarted?.Invoke(this);
     }
 

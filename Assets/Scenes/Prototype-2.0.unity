@@ -12628,7 +12628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1317173974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17213,23 +17213,6 @@ MonoBehaviour:
       m_Action: LeftClick
       m_Flags: 0
     m_Flags: 0
-  rightMouseClick:
-    m_Name: RightClick
-    m_Type: 1
-    m_ExpectedControlType: 
-    m_Id: 6a9aae43-f2b0-4d8c-b012-c789abced3ac
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 9c14f425-eb36-409a-bd4b-305308ce75ca
-      m_Path: <Mouse>/rightButton
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: RightClick
-      m_Flags: 0
-    m_Flags: 0
   mousePosition:
     m_Name: MousePosition
     m_Type: 0
@@ -17253,6 +17236,9 @@ MonoBehaviour:
   facilitiesParent: {fileID: 1593298751}
   welcomePanel: {fileID: 0}
   directionsPanel: {fileID: 0}
+  barrierTilemap: {fileID: 400026803}
+  barrierTile: {fileID: 0}
+  gridSpace: {fileID: 0}
 --- !u!4 &2085310103
 Transform:
   m_ObjectHideFlags: 0

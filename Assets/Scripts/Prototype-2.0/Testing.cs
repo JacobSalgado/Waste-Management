@@ -3,6 +3,7 @@ using CodeMonkey.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 [System.Serializable]
 public struct FacilityPlacement
@@ -30,8 +31,6 @@ public class Testing : MonoBehaviour
     [Header("Input")]
     [SerializeField] private InputAction leftMouseClick =
         new InputAction("LeftClick", InputActionType.Button, "<Mouse>/leftButton");
-    [SerializeField] private InputAction rightMouseClick =
-        new InputAction("RightClick", InputActionType.Button, "<Mouse>/rightButton");
     [SerializeField] private InputAction mousePosition =
         new InputAction("MousePosition", InputActionType.Value, "<Pointer>/position");
 
@@ -43,9 +42,21 @@ public class Testing : MonoBehaviour
     [SerializeField] private GameObject welcomePanel;
     [SerializeField] private GameObject directionsPanel;
 
+    [Header("Barriers")]
+    [SerializeField] private Tilemap barrierTilemap;
+    [SerializeField] private TileBase barrierTile;
+
+    [SerializeField] private GameObject gridSpace; // contains all the visual tiles of the map
+    private readonly HashSet<Vector2Int> presetBarriers = new HashSet<Vector2Int>();
+
     private readonly List<Facility> facilities = new List<Facility>();
     private readonly Dictionary<Vector2Int, Facility> facilitiesByCell = new Dictionary<Vector2Int, Facility>();
-    
+
+    private void Awake()
+    {
+        gridSpace.SetActive(false);
+    }
+
     private void Start()
     {
         //pathfindingVisual.SetGrid(pathfinding.GetGrid());
@@ -53,8 +64,10 @@ public class Testing : MonoBehaviour
 
     public void BeginGame()
     {
+        gridSpace.SetActive(true);
         CreateTileMapGrid();
-        PlaceFacilities();
+        ApplyBarriers(); // sets what is and what isn't walkable on the tile
+        PlaceFacilities(); // sets down locations of facilities. can be edited in inspector. need to create facility object and give it proper details
     }
 
     private void CreateTileMapGrid()
@@ -209,21 +222,6 @@ public class Testing : MonoBehaviour
         }
     }
 
-    private void OnRightClick(InputAction.CallbackContext context)
-    {
-        Vector3 worldPosition = GetMouseWorldPosition();
-        pathfinding.GetGrid().GetXY(worldPosition, out int x, out int y);
-
-        Vector2Int clickedCell = new Vector2Int(x, y);
-        if (facilitiesByCell.ContainsKey(clickedCell)) return;
-
-        PathNode node = pathfinding.GetNode(x, y);
-        if (node == null) return;
-
-        node.SetIsWalkable(!node.isWalkable);
-        Debug.Log($"Cell ({x}, {y}) walkable: {node.isWalkable}");
-    }
-
     private Vector3 GetMouseWorldPosition()
     {
         Vector2 screenPosition = Mouse.current.position.ReadValue();
@@ -254,21 +252,36 @@ public class Testing : MonoBehaviour
         // TODO: return trips? or when modifying score
     }
 
+    private void ApplyBarriers()
+    {
+        if (barrierTilemap == null) return;
+        Grid<PathNode> grid = pathfinding.GetGrid();
+
+        for (int x = 0; x < grid.GetWidth(); x++)
+        {
+            for (int y = 0; y < grid.GetHeight(); y++)
+            {
+                if (barrierTilemap.HasTile(new Vector3Int(x, y, 0)))
+                {
+                    pathfinding.GetNode(x, y).SetIsWalkable(false);
+                    presetBarriers.Add(new Vector2Int(x, y));
+                }
+            }
+        }
+        //barrierTilemap.GetComponent<TilemapRenderer>().enabled = false;
+    }
+
     private void OnEnable()
     {
         leftMouseClick.Enable();
-        rightMouseClick.Enable();
         mousePosition.Enable();
         leftMouseClick.performed += OnLeftClick;
-        rightMouseClick.performed += OnRightClick;
     }
 
     private void OnDisable()
     {
         leftMouseClick.performed -= OnLeftClick;
-        rightMouseClick.performed -= OnRightClick;
         leftMouseClick.Disable();
-        rightMouseClick.Disable();
         mousePosition.Disable();
     }
 }

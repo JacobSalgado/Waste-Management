@@ -69,4 +69,6 @@ public class PathfindingVisual : MonoBehaviour
         mesh.triangles = triangles;
     }
 
+
+
 }

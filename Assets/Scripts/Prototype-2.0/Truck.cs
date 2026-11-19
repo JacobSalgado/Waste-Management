@@ -10,7 +10,6 @@ using UnityEngine;
 public class Truck : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 20f;
-
     [SerializeField] private float turnSpeed = 540f;
 
     // FOR FUTURE SCRIPTS (currency amount, pickup logic, spawner) can listen for this

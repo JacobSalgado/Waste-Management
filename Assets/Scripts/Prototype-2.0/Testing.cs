@@ -1,6 +1,7 @@
 using CodeMonkey;
 using CodeMonkey.Utils;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
@@ -46,6 +47,9 @@ public class Testing : MonoBehaviour
     [SerializeField] private Tilemap barrierTilemap;
     [SerializeField] private TileBase barrierTile;
 
+    [Header("Gameplay UI")]
+    [SerializeField] private TextMeshProUGUI timeRemaining;
+
     [SerializeField] private GameObject gridSpace; // contains all the visual tiles of the map
     private readonly HashSet<Vector2Int> presetBarriers = new HashSet<Vector2Int>();
 
@@ -62,8 +66,15 @@ public class Testing : MonoBehaviour
         //pathfindingVisual.SetGrid(pathfinding.GetGrid());
     }
 
+    private void Update()
+    {
+        //GameplayUI();
+    }
+
     public void BeginGame()
     {
+        Debug.Log("begin game function called!");
+        // GameManager.Instance.StartShift();
         gridSpace.SetActive(true);
         CreateTileMapGrid();
         ApplyBarriers(); // sets what is and what isn't walkable on the tile
@@ -274,6 +285,11 @@ public class Testing : MonoBehaviour
             }
         }
         //barrierTilemap.GetComponent<TilemapRenderer>().enabled = false;
+    }
+
+    private void GameplayUI()
+    {
+        timeRemaining.text = "Time Remaining: " + GameManager.Instance.ShiftTimeRemaining;
     }
 
     private void OnEnable()

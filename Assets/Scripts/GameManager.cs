@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     public float shiftDuration = 300f;
     [SerializeField] private float shiftTimeRemaining;
     public float ShiftTimeRemaining => shiftTimeRemaining;
+
+    public float minutes;
+    public float seconds;
     private bool isShiftActive = false;
     public bool IsShiftActive => isShiftActive;
 
@@ -38,7 +41,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
     }
     private void Start()
@@ -48,11 +51,15 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(isShiftActive)
+        if (isShiftActive)
         {
             shiftTimeRemaining -= Time.deltaTime;
+            minutes = Mathf.FloorToInt(shiftTimeRemaining / 60);
+            seconds = Mathf.FloorToInt(shiftTimeRemaining % 60);
+            Debug.Log("Minutes left:" + minutes);
+            Debug.Log("Seconds left:" + seconds);
 
-            if(shiftTimeRemaining <= 0)
+            if (shiftTimeRemaining <= 0)
             {
                 EndShift();
             }

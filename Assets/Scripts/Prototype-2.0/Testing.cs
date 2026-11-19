@@ -68,17 +68,18 @@ public class Testing : MonoBehaviour
 
     private void Update()
     {
-        //GameplayUI();
+        GameplayUI();
     }
 
     public void BeginGame()
     {
         Debug.Log("begin game function called!");
-        // GameManager.Instance.StartShift();
+        GameManager.Instance.StartShift();
         gridSpace.SetActive(true);
         CreateTileMapGrid();
         ApplyBarriers(); // sets what is and what isn't walkable on the tile
         PlaceFacilities(); // sets down locations of facilities. can be edited in inspector. need to create facility object and give it proper details
+        //leftMouseClick.Enable();
     }
 
     private void CreateTileMapGrid()
@@ -204,6 +205,7 @@ public class Testing : MonoBehaviour
 
     private void OnLeftClick(InputAction.CallbackContext context)
     {
+        if (pathfinding == null) return;
         if (!Pause.GameIsPaused)
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), out RaycastHit hit))
@@ -236,6 +238,11 @@ public class Testing : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void GridControls()
+    { 
+        
     }
 
     private Vector3 GetMouseWorldPosition()
@@ -289,7 +296,7 @@ public class Testing : MonoBehaviour
 
     private void GameplayUI()
     {
-        timeRemaining.text = "Time Remaining: " + GameManager.Instance.ShiftTimeRemaining;
+        timeRemaining.text = string.Format("Time Remaining: {0:00}:{1:00}", GameManager.Instance.minutes, GameManager.Instance.seconds);   
     }
 
     private void OnEnable()

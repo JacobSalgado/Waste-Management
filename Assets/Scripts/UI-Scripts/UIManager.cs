@@ -1,78 +1,42 @@
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     [Header("Welcome Screen")]
-    [SerializeField] private Button startButton;
-    [SerializeField] private TextMeshProUGUI projectTitle;
+    [SerializeField] private GameObject welcomePanel;
+    [SerializeField] private GameObject directionsPanel;
 
-    [Header("Office Gameplay")]
-    [SerializeField] private Button purchaseFacility;
-    [SerializeField] private Button purchaseTruck;
-    [SerializeField] private Button activeSimButton;
+    [Header("")]
+    [SerializeField] private Button nextButtonToDirections;
 
-    [Header("Screenspace")]
-    [SerializeField] private TextMeshProUGUI budgetText;
-    [SerializeField] private TextMeshProUGUI dayCountText;
-    [SerializeField] private TextMeshProUGUI landfillUsageText;
-    [SerializeField] private TextMeshProUGUI trucksText;
-    [SerializeField] private TextMeshProUGUI facilitiesText;
-    [SerializeField] private TextMeshProUGUI cityDirtinessText;
+    [Header("Gameplay UI")]
+    [SerializeField] private GameObject gameUI;
 
-    [Header("End of Week")]
-    [SerializeField] private TextMeshProUGUI weekCompleteText;
+    public void ContinueToDirections()
+    {
+        welcomePanel.SetActive(false);
+        directionsPanel.SetActive(true);
 
-    private TextMeshProUGUI activeSimLabel;
+    }
 
-    [Header("Switch Camera Reference")]
-    [SerializeField] private SwitchCameraView switchCameraView;
+    public void ContinueToGame()
+    {
+        directionsPanel.SetActive(false);
+        gameUI.SetActive(true);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        activeSimLabel = activeSimButton.GetComponentInChildren<TextMeshProUGUI>();
-        weekCompleteText.gameObject.SetActive(false);
-
-        SetGameplayUI(false);
-        startButton.onClick.AddListener(StartGame);
+        //nextButtonToDirections.onClick.AddListener(ContinueToDirections);
     }
 
 
     void StartGame()
     {
-        startButton.gameObject.SetActive(false);
-        projectTitle.gameObject.SetActive(false);
-        SetGameplayUI(true);
-    }
-
-    void SetGameplayUI(bool visible)
-    {
-        purchaseFacility.gameObject.SetActive(visible);
-        purchaseTruck.gameObject.SetActive(visible);
-        budgetText.gameObject.SetActive(visible);
-        dayCountText.gameObject.SetActive(visible);
-        trucksText.gameObject.SetActive(visible);
-        landfillUsageText.gameObject.SetActive(visible);
-        facilitiesText.gameObject.SetActive(visible);
-        cityDirtinessText.gameObject.SetActive(visible);
-    }
-
-    void UpdateSimButton(bool active)
-    {
-        switchCameraView.switchCam(); // <-- this switches the camera when the user activates the sim, making it more seamlessly
-    }
-
-    void ShowWeekComplete()
-    {
-        activeSimButton.gameObject.SetActive(false);
-        weekCompleteText.gameObject.SetActive(true);
-        weekCompleteText.text = "Week Complete!";
-    }
-
-    void OnDestroy()
-    {
-   
+        
     }
 }
